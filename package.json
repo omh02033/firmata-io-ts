@@ -1,0 +1,10 @@
+{
+  "name": "firmata-io-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index",
+  "types": "lib/index.d.ts",
+  "keywords": ["firmata-io-ts", "firmata"],
+  "author": "Oh MyoengHoon",
+  "license": "ISC"
+}
