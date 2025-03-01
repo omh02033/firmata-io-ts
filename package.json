@@ -1,10 +1,14 @@
 {
   "name": "firmata-io-ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/index",
   "types": "lib/index.d.ts",
   "keywords": ["firmata-io-ts", "firmata"],
   "author": "Oh MyoengHoon",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "url": "https://github.com/omh02033/firmata-io-ts"
+  },
+  "homepage": "https://github.com/firmata/firmata.js/tree/master/packages/firmata-io"
 }
