@@ -596,7 +596,7 @@ export class Firmata extends Emitter implements Board {
 	static SYSEX_RESPONSE: any;
 	constructor(
 		port: any,
-		options: {
+		options?: {
 			samplingInterval?: any;
 			pinCount?: number;
 			skipCapabilities?: boolean;
