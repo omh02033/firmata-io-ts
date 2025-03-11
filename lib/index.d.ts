@@ -157,7 +157,7 @@ export declare class Firmata extends Emitter implements Board {
     transport: any;
     reportVersionTimeoutId: NodeJS.Timeout;
     static SYSEX_RESPONSE: any;
-    constructor(port: any, options: {
+    constructor(port: any, options?: {
         samplingInterval?: any;
         pinCount?: number;
         skipCapabilities?: boolean;
@@ -172,18 +172,18 @@ export declare class Firmata extends Emitter implements Board {
      * Asks the arduino to tell us its version.
      * @param {function} callback A function to be called when the arduino has reported its version.
      */
-    reportVersion(callback: () => void): void;
+    reportVersion(callback: (value?: number) => void): void;
     /**
      * Asks the arduino to tell us its firmware version.
      * @param {function} callback A function to be called when the arduino has reported its firmware version.
      */
-    queryFirmware(callback: () => void): void;
+    queryFirmware(callback: (value?: number) => void): void;
     /**
      * Asks the arduino to read analog data. Turn on reporting for this pin.
      * @param {number} pin The pin to read analog data
      * @param {function} callback A function to call when we have the analag data.
      */
-    analogRead(pin: number, callback: () => void): void;
+    analogRead(pin: number, callback: (value?: number) => void): void;
     /**
      * Write a PWM value Asks the arduino to write an analog message.
      * @param {number} pin The pin to write analog data to.
@@ -243,23 +243,23 @@ export declare class Firmata extends Emitter implements Board {
      * @param {number} pin The pin to read data from
      * @param {function} callback The function to call when data has been received
      */
-    digitalRead(pin: number, callback: () => void): void;
+    digitalRead(pin: number, callback: (value?: number) => void): void;
     /**
      * Asks the arduino to tell us its capabilities
      * @param {function} callback A function to call when we receive the capabilities
      */
-    queryCapabilities(callback: () => void): void;
+    queryCapabilities(callback: (value?: number) => void): void;
     /**
      * Asks the arduino to tell us its analog pin mapping
      * @param {function} callback A function to call when we receive the pin mappings.
      */
-    queryAnalogMapping(callback: () => void): void;
+    queryAnalogMapping(callback: (value?: number) => void): void;
     /**
      * Asks the arduino to tell us the current state of a pin
      * @param {number} pin The pin we want to the know the state of
      * @param {function} callback A function to call when we receive the pin state.
      */
-    queryPinState(pin: number, callback: () => void): void;
+    queryPinState(pin: number, callback: (value?: number) => void): void;
     /**
      * Sends a string to the arduino
      * @param {String} string to send to the device
@@ -324,7 +324,7 @@ export declare class Firmata extends Emitter implements Board {
      * @param {number} numBytes The number of bytes to receive.
      * @param {function} callback A function to call when we have received the bytes.
      */
-    sendI2CReadRequest(address: number, numBytes: number, callback: () => void): void;
+    sendI2CReadRequest(address: number, numBytes: number, callback: (value?: number) => void): void;
     /**
      * Initialize a continuous I2C read.
      *
@@ -333,7 +333,7 @@ export declare class Firmata extends Emitter implements Board {
      * @param {number} numBytes   The number of bytes to receive.
      * @param {function} callback A function to call when we have received the bytes.
      */
-    i2cRead(address: number, register: number | null, bytesToRead: number, callback: () => void): this;
+    i2cRead(address: number, register: number | null, bytesToRead: number, callback: (value?: number) => void): this;
     /**
      * Stop continuous reading of the specified I2C address or register.
      *
@@ -360,7 +360,7 @@ export declare class Firmata extends Emitter implements Board {
      * @param {function} callback A function to call when we have received the bytes.
      *
      */
-    i2cReadOnce(address: number, register: number | null, bytesToRead: number, callback: () => void): this;
+    i2cReadOnce(address: number, register: number | null, bytesToRead: number, callback: (value?: number) => void): this;
     /**
      * Configure the passed pin as the controller in a 1-wire bus.
      * Pass as enableParasiticPower true if you want the data pin to power the bus.
@@ -454,7 +454,7 @@ export declare class Firmata extends Emitter implements Board {
      *
      *
      */
-    pingRead(options: any, callback: () => void): void;
+    pingRead(options: any, callback: (value?: number) => void): void;
     /**
      * Stepper functions to support version 2 of ConfigurableFirmata's asynchronous control of stepper motors
      * https://github.com/soundanalogous/ConfigurableFirmata
@@ -488,13 +488,13 @@ export declare class Firmata extends Emitter implements Board {
      * @param {number} deviceNum Device number for the stepper (range 0-5)
      * @param {number} steps Number of steps to make
      */
-    accelStepperStep(deviceNum: number, steps: number, callback: () => void): void;
+    accelStepperStep(deviceNum: number, steps: number, callback: (value?: number) => void): void;
     /**
      * Asks the arduino to move a stepper to a specific location
      * @param {number} deviceNum Device number for the stepper (range 0-5)
      * @param {number} position Desired position
      */
-    accelStepperTo(deviceNum: number, position: number, callback: () => void): void;
+    accelStepperTo(deviceNum: number, position: number, callback: (value?: number) => void): void;
     /**
      * Asks the arduino to enable/disable a stepper
      * @param {number} deviceNum Device number for the stepper (range 0-9)
@@ -510,7 +510,7 @@ export declare class Firmata extends Emitter implements Board {
      * Asks the arduino to report the position of a stepper
      * @param {number} deviceNum Device number for the stepper (range 0-9)
      */
-    accelStepperReportPosition(deviceNum: number, callback: () => void): void;
+    accelStepperReportPosition(deviceNum: number, callback: (value?: number) => void): void;
     /**
      * Asks the arduino to set the acceleration for a stepper
      * @param {number} deviceNum Device number for the stepper (range 0-9)
@@ -536,7 +536,7 @@ export declare class Firmata extends Emitter implements Board {
      * @param {number} groupNum Group number for the multiSteppers (range 0-5)
      * @param {number} positions array of absolute stepper positions
      **/
-    multiStepperTo(groupNum: number, positions: number[], callback: () => void): void;
+    multiStepperTo(groupNum: number, positions: number[], callback: (value?: number) => void): void;
     /**
      * Asks the arduino to stop a multiStepper group
      * @param {number} groupNum: Group number for the multiSteppers (range 0-5)
@@ -602,7 +602,7 @@ export declare class Firmata extends Emitter implements Board {
      * indicates that all available bytes in the buffer should be read.
      * @param {function} callback A function to call when we have received the bytes.
      */
-    serialRead(portId: number, maxBytesToRead: number, callback: () => void): void;
+    serialRead(portId: number, maxBytesToRead: number, callback: (value?: number) => void): void;
     /**
      * Stop continuous reading of the specified serial port. This does not close the port, it stops
      * reading it but keeps the port open.

@@ -938,7 +938,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to be called when the arduino has reported its version.
 	 */
 
-	reportVersion(callback: () => void) {
+	reportVersion(callback: (value?: number) => void) {
 		this.once("reportversion", callback);
 		writeToTransport(this, [REPORT_VERSION]);
 	}
@@ -948,7 +948,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to be called when the arduino has reported its firmware version.
 	 */
 
-	queryFirmware(callback: () => void) {
+	queryFirmware(callback: (value?: number) => void) {
 		this.once("queryfirmware", callback);
 		writeToTransport(this, [START_SYSEX, QUERY_FIRMWARE, END_SYSEX]);
 	}
@@ -959,7 +959,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to call when we have the analag data.
 	 */
 
-	analogRead(pin: number, callback: () => void) {
+	analogRead(pin: number, callback: (value?: number) => void) {
 		this.reportAnalogPin(pin, 1);
 		this.addListener(`analog-read-${pin}`, callback);
 	}
@@ -971,38 +971,38 @@ export class Firmata extends Emitter implements Board {
 	 */
 
 	pwmWrite(pin: number, value: number): void {
-    let data: number[];
+		let data: number[];
 
-    this.pins[pin].value = value;
+		this.pins[pin].value = value;
 
-    if (pin > 15) {
-      data = [
-        START_SYSEX,
-        EXTENDED_ANALOG,
-        pin,
-        value & 0x7f,
-        (value >> 7) & 0x7f,
-      ];
+		if (pin > 15) {
+			data = [
+				START_SYSEX,
+				EXTENDED_ANALOG,
+				pin,
+				value & 0x7f,
+				(value >> 7) & 0x7f,
+			];
 
-      if (value > 0x00004000) {
-        data[data.length] = (value >> 14) & 0x7f;
-      }
+			if (value > 0x00004000) {
+				data[data.length] = (value >> 14) & 0x7f;
+			}
 
-      if (value > 0x00200000) {
-        data[data.length] = (value >> 21) & 0x7f;
-      }
+			if (value > 0x00200000) {
+				data[data.length] = (value >> 21) & 0x7f;
+			}
 
-      if (value > 0x10000000) {
-        data[data.length] = (value >> 28) & 0x7f;
-      }
+			if (value > 0x10000000) {
+				data[data.length] = (value >> 28) & 0x7f;
+			}
 
-      data[data.length] = END_SYSEX;
-    } else {
-      data = [ANALOG_MESSAGE | pin, value & 0x7f, (value >> 7) & 0x7f];
-    }
+			data[data.length] = END_SYSEX;
+		} else {
+			data = [ANALOG_MESSAGE | pin, value & 0x7f, (value >> 7) & 0x7f];
+		}
 
-    writeToTransport(this, data);
-  }
+		writeToTransport(this, data);
+	}
 
 	/**
 	 * Set a pin to SERVO mode with an explicit PWM range.
@@ -1077,8 +1077,8 @@ export class Firmata extends Emitter implements Board {
 		this.analogWrite(args);
 	}
 	analogWrite(...arg: any): void {
-    return this.pwmWrite(arg.pin, arg.number);
-  }
+		return this.pwmWrite(arg.pin, arg.number);
+	}
 
 	/**
 	 * Asks the arduino to set the pin to a certain mode.
@@ -1174,7 +1174,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback The function to call when data has been received
 	 */
 
-	digitalRead(pin: number, callback: () => void) {
+	digitalRead(pin: number, callback: (value?: number) => void) {
 		this.reportDigitalPin(pin, 1);
 		this.addListener(`digital-read-${pin}`, callback);
 	}
@@ -1184,7 +1184,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to call when we receive the capabilities
 	 */
 
-	queryCapabilities(callback: () => void) {
+	queryCapabilities(callback: (value?: number) => void) {
 		this.once("capability-query", callback);
 		writeToTransport(this, [START_SYSEX, CAPABILITY_QUERY, END_SYSEX]);
 	}
@@ -1194,7 +1194,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to call when we receive the pin mappings.
 	 */
 
-	queryAnalogMapping(callback: () => void) {
+	queryAnalogMapping(callback: (value?: number) => void) {
 		this.once("analog-mapping-query", callback);
 		writeToTransport(this, [START_SYSEX, ANALOG_MAPPING_QUERY, END_SYSEX]);
 	}
@@ -1205,7 +1205,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to call when we receive the pin state.
 	 */
 
-	queryPinState(pin: number, callback: () => void) {
+	queryPinState(pin: number, callback: (value?: number) => void) {
 		this.once(`pin-state-${pin}`, callback);
 		writeToTransport(this, [START_SYSEX, PIN_STATE_QUERY, pin, END_SYSEX]);
 	}
@@ -1439,7 +1439,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to call when we have received the bytes.
 	 */
 
-	sendI2CReadRequest(address: number, numBytes: number, callback: () => void) {
+	sendI2CReadRequest(address: number, numBytes: number, callback: (value?: number) => void) {
 		i2cRequest(this, [
 			START_SYSEX,
 			I2C_REQUEST,
@@ -1468,7 +1468,7 @@ export class Firmata extends Emitter implements Board {
 		address: number,
 		register: number | null,
 		bytesToRead: number,
-		callback: () => void,
+		callback: (value?: number) => void,
 	) {
 		if (
 			arguments.length === 3 &&
@@ -1568,7 +1568,7 @@ export class Firmata extends Emitter implements Board {
 		address: number,
 		register: number | null,
 		bytesToRead: number,
-		callback: () => void,
+		callback: (value?: number) => void,
 	) {
 		if (
 			arguments.length === 3 &&
@@ -1720,7 +1720,7 @@ export class Firmata extends Emitter implements Board {
 	 */
 
 	sendOneWireReset(pin: number) {
-		this[SYM_sendOneWireRequest](pin, ONEWIRE_RESET_REQUEST_BIT, );
+		this[SYM_sendOneWireRequest](pin, ONEWIRE_RESET_REQUEST_BIT);
 	}
 
 	/**
@@ -1927,7 +1927,7 @@ export class Firmata extends Emitter implements Board {
 	 *
 	 */
 
-	pingRead(options: any, callback: () => void) {
+	pingRead(options: any, callback: (value?: number) => void) {
 		if (!this.pins[options.pin].supportedModes.includes(PING_READ)) {
 			throw new Error("Please upload PingFirmata to the board");
 		}
@@ -2067,7 +2067,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {number} deviceNum Device number for the stepper (range 0-5)
 	 * @param {number} steps Number of steps to make
 	 */
-	accelStepperStep(deviceNum: number, steps: number, callback: () => void) {
+	accelStepperStep(deviceNum: number, steps: number, callback: (value?: number) => void) {
 		writeToTransport(this, [
 			START_SYSEX,
 			ACCELSTEPPER,
@@ -2087,7 +2087,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {number} deviceNum Device number for the stepper (range 0-5)
 	 * @param {number} position Desired position
 	 */
-	accelStepperTo(deviceNum: number, position: number, callback: () => void) {
+	accelStepperTo(deviceNum: number, position: number, callback: (value?: number) => void) {
 		writeToTransport(this, [
 			START_SYSEX,
 			ACCELSTEPPER,
@@ -2139,7 +2139,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {number} deviceNum Device number for the stepper (range 0-9)
 	 */
 
-	accelStepperReportPosition(deviceNum: number, callback: () => void) {
+	accelStepperReportPosition(deviceNum: number, callback: (value?: number) => void) {
 		writeToTransport(this, [
 			START_SYSEX,
 			ACCELSTEPPER,
@@ -2213,7 +2213,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {number} positions array of absolute stepper positions
 	 **/
 
-	multiStepperTo(groupNum: number, positions: number[], callback: () => void) {
+	multiStepperTo(groupNum: number, positions: number[], callback: (value?: number) => void) {
 		if (groupNum < 0 || groupNum > 5) {
 			throw new RangeError(
 				`Invalid "groupNum": ${groupNum}. Expected "groupNum" between 0-5`,
@@ -2225,9 +2225,12 @@ export class Firmata extends Emitter implements Board {
 			ACCELSTEPPER,
 			0x21, // MULTISTEPPER_TO from firmware
 			groupNum,
-			...positions.reduce((a, b) => a.concat(encode32BitSignedInteger(b)), [] as number[]),
+			...positions.reduce(
+				(a, b) => a.concat(encode32BitSignedInteger(b)),
+				[] as number[],
+			),
 			END_SYSEX,
-		]);		
+		]);
 
 		/* istanbul ignore else */
 		if (callback) {
@@ -2438,7 +2441,7 @@ export class Firmata extends Emitter implements Board {
 	 * @param {function} callback A function to call when we have received the bytes.
 	 */
 
-	serialRead(portId: number, maxBytesToRead: number, callback: () => void) {
+	serialRead(portId: number, maxBytesToRead: number, callback: (value?: number) => void) {
 		const data = [
 			START_SYSEX,
 			SERIAL_MESSAGE,

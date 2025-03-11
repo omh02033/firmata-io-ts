@@ -1,7 +1,7 @@
 {
   "name": "firmata-io-ts",
-  "version": "1.0.2",
-  "description": "",
+  "version": "1.0.4",
+  "description": "firmata-io typescript",
   "main": "lib/index",
   "types": "lib/index.d.ts",
   "keywords": [
