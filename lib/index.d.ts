@@ -285,9 +285,9 @@ export declare class Firmata extends Emitter implements Board {
      * @param {object} with a single property `delay`
      */
     i2cConfig(options: number | {
-        settings: any;
-        delay: any;
-        address: any;
+        settings?: any;
+        delay?: any;
+        address?: any;
     }): this;
     /**
      * Asks the arduino to send an I2C request to a device

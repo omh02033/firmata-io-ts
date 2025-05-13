@@ -1256,9 +1256,9 @@ export class Firmata extends Emitter implements Board {
 		options:
 			| number
 			| {
-					settings: any;
-					delay: any;
-					address: any;
+					settings?: any;
+					delay?: any;
+					address?: any;
 			  },
 	) {
 		let settings = i2cActive.get(this);
